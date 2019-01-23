@@ -1,3 +1,5 @@
+[(Demo) Ateliê - Maria Modas](http://www.ateliemariamodas.com.br)
+
 # Descrição do projeto
 
 Código fonte de um projeto feito em PHP, utilizando o Framework Laravel na sua versão 5.5. O projeto possui uma fácil manutenção, pois criei pensando nisso, foi desenvolvido com o Framework mais utilizado no mundo, isso quer dizer que a documentação do mesmo é atualizada frequentemente.
@@ -22,12 +24,12 @@ APP_URL=http://localhost:8000
 
 3- Setar as configurações de conexão com a base de dados (exemplo abaixo)
 
-DB_CONNECTION=mysql
-DB_HOST=127.0.0.1
-DB_PORT=3306
-DB_DATABASE=sigres
-DB_USERNAME=root
-DB_PASSWORD=
+DB_CONNECTION=mysql<br />
+DB_HOST=127.0.0.1<br />
+DB_PORT=3306<br />
+DB_DATABASE=sigres<br />
+DB_USERNAME=root<br />
+DB_PASSWORD=<br />
 
 3- Rodar comando "php artisan migrate"
 
