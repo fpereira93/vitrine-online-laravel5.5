@@ -1,0 +1,34 @@
+.box-shadow {
+    box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2);
+    transition: 0.3s;
+}
+
+.box-shadow:hover {
+    box-shadow: 0 8px 16px 0 rgba(0,0,0,0.2);
+}
+
+.green {
+    color: #49bf00 !important;
+}
+
+.green-background {
+    background-color: #49bf00 !important;
+}
+
+.zoom-in {
+    cursor: zoom-in !important;
+}
+
+.pointer {
+    cursor: pointer !important;
+}
+
+.loading-image {
+    background-image: url(../images/home/loading.svg);
+    background-repeat: no-repeat;
+    background-position-x: center;
+    background-position-y: center;
+    position: relative;
+    width: 100%;
+    top: 0;
+}

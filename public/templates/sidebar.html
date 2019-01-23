@@ -1,0 +1,30 @@
+<aside class="main-sidebar">
+    <section class="sidebar">
+        <div class="user-panel">
+            <div class="pull-left image">
+                <img src="http://www.lorempixel.com/64/64/business" class="img-circle" alt="User Image"/>
+            </div>
+            <div class="pull-left info">
+                <p>Bruna Ferrari</p>
+            </div>
+        </div>
+        <ul class="sidebar-menu" data-widget="tree" data-bind="foreach:menu">
+            <li class="treeview">
+                <a href="#">
+                    <i data-bind="css: 'fa fa-' + icon"></i>
+                    <span data-bind="text:title"></span>
+                    <span class="pull-right-container">
+                        <i class="fa fa-angle-left pull-right"></i>
+                    </span>
+                </a>
+                <ul class="treeview-menu" data-bind="foreach:sons">
+                    <li><a href="#" data-bind="attr: {href:url}"><i data-bind="css: 'fa fa-' + icon"></i><span data-bind="text:title"></span></a></li>
+                </ul>
+            </li>
+        </ul>
+
+        <script type="text/javascript">
+            alert();
+        </script>
+    </section>
+</aside>

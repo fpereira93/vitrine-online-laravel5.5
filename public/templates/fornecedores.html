@@ -1,0 +1,126 @@
+    <div class="box">
+        <div class="box-header with-border">
+            <h3 class="box-title">Fornecedores</h3>
+        </div>
+        <div class="box-body">
+                <div class="tab-content">
+
+                    <!-- ko if: Constants.STEPS.Listing == step() -->
+                        <button-add-new params="click: addProvider"></button-add-new>
+
+                        <div class="row mt-5">
+                            <data-table params="conf : $data.configDataTable"> </data-table>
+                        </div>
+                    <!-- /ko -->
+
+                    <!-- ko if: [Constants.STEPS.AddingNew, Constants.STEPS.Editing].indexOf(step()) != -1 -->
+                        <button-back params="click:showList"></button-back>
+
+                        <div class="row mt-5">
+
+                            <form role="form" data-bind="with: selectedProvider">
+                                <form-input-text params="value:SocialName, placeholder: 'Razão Social do Fornecedor', label:'Razão Social'"></form-input-text>
+                                <form-input-text params="value:FantasyName, placeholder: 'Nome Fantasia do Fornecedor', label:'Nome Fantasia'"></form-input-text>
+                                <form-input-text params="value:CNPJ, placeholder: 'CNPJ', label: 'CNPJ'"></form-input-text>
+                                <form-input-text params="value:IE, placeholder: 'Inscrição Estadual (I.E.)', label: 'Inscrição Estadual (Se houver)'"></form-input-text>
+                                <form-input-text params="value:PhoneNumber, placeholder: 'Telefone para Contato', label: 'Telefone', css: 'col-xs-6 col-md-3'"></form-input-text>
+                                <form-input-text params="value:PhoneNumber2, placeholder: 'Telefone para Contato', label: 'Telefone', css: 'col-xs-6 col-md-3'"></form-input-text>
+                                <form-input-text params="value:Mail, placeholder: 'E-mail para contato', label: 'E-mail'"></form-input-text>
+                                <form-input-text params="value:WebSite, placeholder: 'Endereço do Website', label: 'Site', css: 'col-xs-12 col-md-12'"></form-input-text>
+                                <form-input-text params="value:Street, placeholder: 'Rua, Avenida, Rodovia, etc.', label: 'Logradouro', css: 'col-xs-8 col-md-10'"></form-input-text>
+                                <form-input-text params="value:Number, placeholder: 'Número', label: 'Número', css: 'col-xs-4 col-md-2'"></form-input-text>
+                                <form-input-text params="value:District, placeholder: 'Bairro, Agrupamento, Sítio', label: 'Bairro', css: 'col-xs-12 col-md-5'"></form-input-text>
+                                <form-input-text params="value:City, placeholder: 'Município', label: 'Município', css: 'col-xs-12 col-md-5'"></form-input-text>
+
+                                <div class="form-group col-xs-12 col-md-2">
+                                    <label for="responsaveis">UF</label>
+                                    <select name="" id="" class="form-control" data-bind="options: $root.states, value:State">
+                                    </select>
+                                </div>
+
+                                <div class="col-md-6">
+                                    <div class="row">
+                                        <div class="col-md-12">
+                                            <h3>Tipos de resíduos atendidos</h3>
+                                        </div>
+
+                                        <div class="col-md-12">
+                                            <div class="row">
+                                                <div class="col-md-10 mb-5">
+                                                    <select class="form-controll select2 full-width" data-bind="value: $parent.residueTypeSelected, options: $parent.listResidueType, select2: $parent.confAutocomplete"></select>
+                                                </div>
+
+                                                <div class="col-md-2">
+                                                    <button type="button" class="btn btn-flat btn-success pull-right" data-bind="click: $parent.addResidueType">
+                                                        <i class="fa fa-plus"></i>
+                                                    </button>
+                                                </div>
+                                            </div>
+                                        </div>
+
+
+                                        <div class="col-md-12">
+                                            <ul class="list-group mt-10" data-bind="foreach: AcceptedResidues">
+                                                <!-- ko if: !$data.deleted() -->
+                                                <li class="list-group-item clickable">
+                                                    <span class="fa fa-times font-thin" data-bind="click: $parent.deleteResidue"></span>
+                                                    <span>
+                                                        <!-- ko text: Name()--><!--/ko-->
+                                                    </span>
+                                                </li>
+                                                <!--/ko-->
+                                            </ul>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="col-md-6">
+                                    <div class="row">
+                                        <div class="col-md-12">
+                                            <h3>Arquivos</h3>
+                                        </div>
+
+                                        <div class="col-md-12">
+                                            <div class="row">
+                                                <div class="col-md-4">
+                                                    <input type="file" id="addFile" class="fileInput fileInputRed" data-bind="event: { change: $parent.handleFileSelected }"/>
+                                                    <label class="full-width text-center" for="addFile">Selecione o arquivo</label>
+                                                </div>
+
+                                                <div class="col-md-7">
+                                                    <input type="text" class="form-control mb-5" data-bind="value: $parent.descriptionFileUpload" placeholder="Descrição do Documento" />
+                                                </div>
+
+                                                <div class="col-md-1">
+                                                    <button type="button" class="btn btn-flat btn-success pull-right" data-bind="click: $parent.saveFile">
+                                                        <i class="fa fa-plus"></i>
+                                                    </button>
+                                                </div>
+                                            </div>
+                                        </div>
+
+
+                                        <div class="col-md-12">
+                                            <ul class="list-group mt-10" data-bind="foreach: Docs">
+                                                <!-- ko if: !$data.deleted() -->
+                                                <li class="list-group-item clickable">
+                                                    <span class="fa fa-times font-thin" data-bind="click: $parent.deleteFile"></span>
+                                                    <span>
+                                                        <!-- ko text: Description --><!--/ko-->
+                                                    </span>
+                                                </li>
+                                                <!-- /ko -->
+                                            </ul>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="col-xs-12">
+                                    <button type="submit" class="btn btn-success btn-flat" data-bind="click: $parent.saveProvider">Salvar</button>
+                                </div>
+                            </form>
+                        </div>
+                    <!-- /ko -->
+                </div>
+        </div>
+    </div>

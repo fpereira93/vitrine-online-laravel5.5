@@ -1,0 +1,160 @@
+    <div class="box">
+        <div class="box-body">
+            <div class="nav-tabs-custom">
+                <ul class="nav nav-tabs">
+                    <li data-bind="css: step() == Constants.STEPS.Listing ? 'active' : '' ">
+                        <a href="javascript:;">Lista</a>
+                    </li>
+                    <li data-bind="css: step() == Constants.STEPS.AddingNew ? 'active' : '' ">
+                        <a href="javascript:;">Incluir</a>
+                    </li>
+                    <li data-bind="css: step() == App.Treinamento.Constants.STEPS.SummonUp ? 'active' : '' ">
+                        <a href="javascript:;">Convocação</a>
+                    </li>
+                </ul>
+                <div class="tab-content">
+                    <div class="tab-pane " data-bind="css: step() == Constants.STEPS.Listing ? 'active' : '' ">
+                        <div class="col-xs-6 col-md-2 btn-block" style="margin:10px;">
+                            <button class="btn btn-primary btn-flat" data-bind="click: novoTreinamento" style="margin-left: -10px;">Novo
+                                <i class="fa fa-plus"></i>
+                            </button>
+                        </div>
+                        <div class="col-md-3 col-xs-5 ">
+                            <select class="form-control" data-bind="value: typeFilter">
+                                <option value="TODOS">TODOS</option>
+                                <option value="Aberto">ABERTOS</option>
+                                <option value="Fechado">FECHADOS</option>
+                            </select>
+                        </div>
+                        <div class="input-group col-md-9 col-xs-7 ">
+                            <input type="text" class="form-control" data-bind="value: filter">
+                            <span class="input-group-btn" id="basic-addon2">
+                                <button class="btn btn-flat">
+                                    <i class="fa fa-search"></i>
+                                </button>
+                            </span>
+                        </div>
+                        <table class="table">
+                            <thead>
+                                <tr>
+                                    <th>Local</th>
+                                    <th>Tema</th>
+                                    <th>Data</th>
+                                    <th style="width:140px;">Status</th>
+                                    <th>Mais</th>
+                                </tr>
+                            </thead>
+                            <tbody data-bind="foreach: filteredItems">
+                                <tr>
+                                    <td data-bind="text: local"></td>
+                                    <td data-bind="text: tema"></td>
+                                    <td data-bind="text: moment(dia()).format('DD/MM/YYYY')"></td>
+                                    <td data-bind="text: status"></td>
+                                    <td>
+                                        <a href="javascript:;" data-bind="visible: estaAberto, click:$parent.convocar.bind($data)">Convocar</a>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div class="tab-pane" data-bind="css: step() == Constants.STEPS.AddingNew ? 'active' : '' ">
+                        <div class="row">
+                            <div class="col-md-4">
+                                <button-back style="margin-left: 15px;" params="click: volta"></button-back>
+                            </div>
+                        </div>
+                        <form role="form" data-bind="with:treinamento">
+                            <form-input-text params="value:palestrante, placeholder: 'Palestrante', label: 'Palestrante'"></form-input-text>
+                            <form-input-text params="value:local, placeholder: 'Local', label: 'Local'"></form-input-text>
+                            <form-input-text params="value:tema, placeholder: 'Tema', label: 'Tema', css: 'col-xs-12 col-md-12'"></form-input-text>
+                            <form-input-date params="value:dia, placeholder: 'Início Previsto', label: 'Data de Início', css: 'col-xs-12 col-md-4'"></form-input-date>
+                            <form-input-date params="value:diaFinal, placeholder: 'Término Previsto', label: 'Data Final', css: 'col-xs-12 col-md-4'"></form-input-date>
+                            <form-input-select params="value:status, options: ['Fechado', 'Aberto'], css: 'col-md-4 col-xs-12', label: 'Status'"></form-input-select>
+                            <div class="form-group col-xs-12">
+                                <label for="palestrante">Pauta -
+                                    <small>
+                                        <i>Enter insere a pauta</i>
+                                    </small>
+                                </label>
+                                <input type="text" class="form-control input-sm" data-bind="value: $parent.inputPauta, valueUpdate: 'keyup', enterkey: $parent.addPauta"
+                                    placeholder="Pauta" />
+                            </div>
+                            <div class="col-xs-12">
+                                <ul data-bind="foreach: pauta">
+                                    <li data-bind="text: $data"></li>
+                                </ul>
+                            </div>
+                            <div class="clearfix"></div>
+                            <button type="button" data-bind="click: $parent.addTreinamento" style="margin-left: 15px;" class="btn btn-success btn-flat">Salvar</button>
+                        </form>
+                    </div>
+                    <div class="tab-pane" data-bind="css: step() == App.Treinamento.Constants.STEPS.SummonUp ? 'active': ''">
+                        <button-back style="margin-left: 15px;" params="click: volta"></button-back>
+                        <div class="row">
+                            <div class="col-xs-12">
+                                <h4 class="text-center" data-bind="text:setorSelecionado() ? 'Selecione os funcionários do setor': 'Selecione o setor'"></h4>
+                            </div>
+                            <div data-bind="css: 'col-xs-12 ' + (setorSelecionado() ? ' col-md-4' : '')">
+                                <div class="list-group clickable" data-bind="foreach:setores">
+                                    <div data-bind="text: $data, click: $parent.selecionaSetor.bind($data), css: 'list-group-item ' + ($parent.setorSelecionado() == $data ? ' active' : '')"></div>
+                                </div>
+                            </div>
+                            <!-- ko if:setorSelecionado -->
+                            <div class="col-xs-12 col-md-8">
+                                <form-input-text params="value: pesquisaFuncionario, placeholder: 'Pesquisar por nome ou e-mail', label: 'Buscar', css: 'col-xs-12 col-md-12'"></form-input-text>
+                                <div class="col-xs-12 col-md-4">
+                                    <button class="btn btn-xs btn-info" data-bind="click:convocaTodosDoSetor"> Convocar Todos</button>
+                                </div>
+                                <table class="table">
+                                    <thead>
+                                        <tr>
+                                            <th>Nome</th>
+                                            <th>Email</th>
+                                            <th>Ações</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody data-bind="foreach:funcionariosConvocados">
+                                        <tr>
+                                            <td data-bind="text: nome"></td>
+                                            <td data-bind="text: email"></td>
+                                            <td>
+                                                <button class="btn btn-xs btn-info" data-bind="disable: convocado, click:$parent.convocaFuncionario.bind($data)">
+                                                    Convocar
+                                                </button>
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                            <!-- /ko -->
+                        </div>
+                        <!-- ko if: treinamento().convocados().length -->
+                        <div class="row">
+                            <div class="col-xs-12">
+                                <h4>Funcionários no treinamento</h4>
+                                <table class="table">
+                                    <thead>
+                                        <tr>
+                                            <th>Nome</th>
+                                            <th>Setor</th>
+                                            <th>Remover</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody data-bind="foreach:treinamento().convocados">
+                                        <tr>
+                                            <td data-bind="text:nome"></td>
+                                            <td data-bind="text:setor"></td>
+                                            <td>
+                                                <button class="btn btn-danger btn-xs" data-bind="click:$parent.removeFuncionario.bind($data)">Remover</button>
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                        <!-- /ko -->
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>

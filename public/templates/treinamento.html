@@ -1,0 +1,85 @@
+<div class="box">
+    <div class="box-body">
+        <!-- ko if: step() == Constants.STEPS.Listing -->
+            <div class="col-xs-6 col-md-2 btn-block" style="margin:10px;">
+                <button class="btn btn-primary btn-flat" data-bind="click: addNew" style="margin-left: -10px;">Novo
+                    <i class="fa fa-plus"></i>
+                </button>
+            </div>
+            <data-table params="conf:$data.configDataTable"></data-table>
+        <!-- /ko -->
+        <!-- ko if: step() == Constants.STEPS.AddingNew || step() == Constants.STEPS.Editing -->
+            <div class="row">
+                <div class="col-md-8">
+                    <button-back style="margin-left: 15px;" params="click: showListing"></button-back>
+                    <button-add-new style="margin-left: 15px;" params="click: summonUp"></button-add-new>
+                </div>
+            </div>
+            <form role="form" data-bind="with:editing" style="margin-top:10px">
+                <div class="col-xs-12 col-md-6 form-group">
+                    <label>Selecione um palestrante</label>
+                    <select class="form-control select2" data-bind="value: $data.TrainerId ,optionsValue: 'id', optionsText: 'text', options: $parent.trainers,  select2: { placeholder:'Selecione um palestrante', allowClear:true }"/>
+                </div>
+                <form-input-text params="value:Place, placeholder: 'Local', label: 'Local'"></form-input-text>
+                <form-input-text params="value:Theme, placeholder: 'Tema', label: 'Tema', css: 'col-xs-12 col-md-12'"></form-input-text>
+                <form-input-date params="value:BeginDate, placeholder: 'Início Previsto', label: 'Data de Início', css: 'col-xs-12 col-md-6'"></form-input-date>
+                <form-input-date params="value:EndDate, placeholder: 'Término Previsto', label: 'Data Final', css: 'col-xs-12 col-md-6'"></form-input-date>
+                <h3>Tópicos</h3>
+                <div class="col-xs-12">
+                    <input type="text" class="form-control input-sm" data-bind="value:$parent.Topic, enterkey: $parent.insertTopic, valueUpdate: 'afterkeydown'"/>
+                </div>
+                <div class="col-xs-12 col-md-6">
+                    <!-- ko if: Topics().length -->
+                    <ul data-bind="foreach:renderizableTopics" class="todo-list" style="margin-top: 10px; margin-bottom:10px;">
+                        <li>
+                            <span class="text" data-bind="text:Description"></span>
+                            <div class="tools">
+                                <i class="fa fa-trash" data-bind="click: $parents[1].removeTopic"></i>
+                            </div>
+                        </li>
+                    </ul>
+                    <!-- /ko -->
+                    <!-- ko ifnot: Topics().length -->
+                    <h4>Adicione aqui os tópicos do treinamento</h4>
+                    <!-- /ko -->
+                </div>
+                <div class="col-xs-12">
+                    <button type="button" data-bind="click: $parent.saveTraining" style="margin-left: 15px;" class="btn btn-success btn-flat">Salvar</button>
+                </div>
+            </form>
+        <!-- /ko -->
+        <!-- ko if: step() == App.Training.Constants.STEPS.SummonUp -->
+            <button-back style="margin-left: 15px;" params="click: showListing"></button-back>
+            <h3>Usuários convocados</h3>
+            <div class="row">
+                <div class="col-xs-12 col-md-6">
+                    <div class="col-xs-12 col-md-6 input-group">
+                        <select class="form-control select2" data-bind="value: $data.User, optionsValue: 'id', optionsText: 'text', options: $data.usersToSummon, select2: { placeholder:'Selecione um usuário', allowClear:true }"/>
+                        <span class="input-group-btn">
+                            <button type="button" class="btn btn-info" data-bind="click: $data.addUser">
+                                <i class="fa fa-plus"></i>
+                            </button>
+                        </span>
+                    </div>
+                </div>
+            </div>  
+            <div class="row">
+                <div class="col-xs-12 col-md-6">
+                    <!-- ko if: summonedUsers().length -->
+                    <ul data-bind="foreach:summonedUsers" class="todo-list" style="margin-top: 10px; margin-bottom:10px;">
+                       <li>
+                           <span class="text" data-bind="text:name"></span>
+                           <div class="tools">
+                               <i class="fa fa-trash" data-bind="click: $parent.removeUser"></i>
+                           </div>
+                       </li>
+                   </ul>
+                   <!-- /ko -->
+                   <!-- ko ifnot: summonedUsers().length -->
+                   <h4>Adicione usuários a este treinamento</h4>
+                   <!-- /ko -->
+                </div>
+            </div>
+        <!-- /ko -->
+    </div>
+</div>

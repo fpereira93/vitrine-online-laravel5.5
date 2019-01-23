@@ -1,0 +1,21 @@
+.direct-chat-success .direct-chat-text {
+    border-radius: inherit;
+}
+
+.direct-chat-success .direct-chat-text pre {
+    border: none;
+    border-radius: 0;
+    background-color: inherit !important;
+    padding: 0;
+    margin: 0;
+    font-size: 14px;
+    color: inherit;
+
+    word-wrap: break-word;
+    white-space: pre-wrap;
+    white-space: -moz-pre-wrap;
+    white-space: -pre-wrap;
+    white-space: -o-pre-wrap;
+    word-wrap: break-word;
+}
+

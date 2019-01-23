@@ -1,0 +1,212 @@
+<div class="box">
+    <div class="box-body">
+        <!-- ko if: step() == 0 -->
+            <table class="table">
+                <data-table params="conf:$data.configDataTable"></data-table>
+            </table>
+        <!-- /ko -->
+        <!-- ko if: step() == Constants.STEPS.AddingNew -->
+        <!-- ko with: show -->
+        <button-back params="click: $parent.showListing">Voltar</button-back>
+        <div class="row">
+            <div class="col-xs-12 col-md-6">
+                <label>Multiplicador</label>
+                <input type="text" class="form-control" readonly="true" data-bind="value:MultiplierName" />
+            </div>
+            <div class="col-xs-12 col-md-6">
+                <label>Auditor</label>
+                <input type="text" class="form-control" readonly="true" data-bind="value:AuditorName" />
+            </div>
+            <div class="col-xs-12 col-md-6">
+                <label>Contato</label>
+                <input type="text" class="form-control" readonly="true" data-bind="value:ContactName" />
+            </div>
+            <div class="col-xs-12 col-md-6">
+                <label>Data</label>
+                <input type="text" class="form-control" readonly="true" data-bind="value:Date" />
+            </div>
+        </div>
+        <div class="row" style="margin-top:30px; margin-bottom: 30px;">
+            <div class="col-xs-12" >
+                <a href="javascript:;" style="text-decoration:underline" data-bind="click:showAuditing">Auditoria</a>
+                <a href="javascript:;" style="margin-left: 30px; text-decoration:underline" data-bind="click:showPartialResults">Resultados parciais</a>
+            </div>
+        </div>
+        <div class="row" data-bind="if: auditStep() == App.Auditoria.Constants.STEPS.Auditing">
+            <!-- ko if: auditSubStep() ==  App.Auditoria.Constants.STEPS.ShowingResidues -->
+            <div class="col-xs-12">
+                <h4>Resíduos</h4>
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th>#</th>
+                            <th>Resíduo</th>
+                            <th>Auditado / Checklist</th>
+                            <th>Metas Auditadas</th>
+                            <th>Progresso</th>
+                        </tr>
+                    </thead>
+                    <tbody data-bind="foreach:Residues">
+                        <tr>
+                            <td data-bind="text:ChecklistResidueId"></td>
+                            <td>
+                                <a href="javascript:;" data-bind="text:ResidueType, click: $parent.showGoalsForResidue.bind($data)"></a>
+                            </td>
+                            <td data-bind="text:(!QuantityAudited()? '?' : QuantityAudited()) + '/' + QuantityFound()"></td>
+                            <td data-bind="text:auditedGoals().length + '/' + Goals().length"></td>
+                            <td>
+                                <div class="progress">
+                                    <div class="progress-bar progress-bar-success" data-bind="style: { width: progress() + '%'}">
+                                      <span data-bind="text: progress() + '%'"></span>
+                                    </div>
+                                </div>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            <!-- /ko -->
+            <!-- ko if: auditSubStep() ==  App.Auditoria.Constants.STEPS.ShowingGoals -->
+                <!-- ko with: selectedResidue -->
+                        <div class="col-xs-12">
+                            <ol class="breadcrumb">
+                                <li>
+                                    <a href="javascript:;" style="text-decoration:underline" data-bind="click:$parent.showAuditing">Resíduos</a>
+                                </li>
+                                <li>
+                                    <span data-bind="text:ResidueType"></span>
+                                </li>
+                            </ol>
+                        </div>
+                            <!-- ko ifnot:$parents[1].show().noEdit() -->
+                            <form-input-number params="value:QuantityAudited, placeholder: 'Quantidade Auditada', label: 'Quantidade Auditada'"></form-input-number>
+                            <!-- /ko -->
+                        <div class="col-xs-12">
+                            <table class="table">
+                                <thead>
+                                    <tr>
+                                        <th>Derivação</th>
+                                        <th>Ações Auditadas</th>
+                                        <th>Progresso</th>
+                                    </tr>
+                                </thead>
+                                <tbody data-bind="foreach:Goals">
+                                    <tr>
+                                        <td>
+                                            <a href="javascript:;" data-bind="text:derivation, click: $parents[2].show().showActionsForGoal.bind($data)"></a>
+                                        </td>
+                                        <td data-bind="text:auditedActions().length + '/' + actions().length"></td>
+                                        <td>
+                                            <div class="progress">
+                                                <div class="progress-bar progress-bar-success" data-bind="style: { width: progress() + '%'}">
+                                                    <span data-bind="text: progress() + '%'"></span>
+                                                </div>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                <!-- /ko -->
+            <!-- /ko -->
+            <!-- ko if: auditSubStep() == App.Auditoria.Constants.STEPS.ShowingActions -->
+                <!-- ko with: selectedResidue -->
+                <div class="col-xs-12">
+                    <ol class="breadcrumb">
+                        <li><a href="javascript:;" style="text-decoration:underline" data-bind="click:$parent.showAuditing">Resíduos</a></li>
+                        <li><a href="javascript:;" style="text-decoration:underline" data-bind="click:$parent.showGoalsForResidue.bind($data), text:ResidueType"></a></li>
+                        <!-- ko ifnot: $parent.selectedAction -->
+                        <li><span data-bind="text:$parent.selectedGoal().derivation"></span></li>
+                        <!-- /ko -->
+                        <!-- ko if:$parent.selectedAction -->
+                        <li><a href="javascript:;" style="text-decoration:underline" data-bind="text:$parent.selectedGoal().derivation, click:$parents[1].show().hideActionDetails"></a></li>
+                        <li><span data-bind="text:$parent.selectedAction().action"></span></li>
+                        <!-- /ko -->
+                    </ol>
+                </div>
+                <!-- /ko -->
+                <!-- ko ifnot: selectedAction -->
+                    <!-- ko with: selectedGoal -->
+                        <!-- ko ifnot:$parents[1].show().noEdit() -->
+                        <form-input-select params="value:isCanceled, placeholder: 'Cancelado?', label: 'Cancelado?', options:Constants.YesNo, optionsValue: 'value', optionsText: 'text'"></form-input-select>
+                        <!-- /ko-->
+                    <div class="col-xs-12">
+                        <table class="table">
+                            <thead>
+                                <tr>
+                                    <th>Ação</th>
+                                    <th>Local</th>
+                                    <th>Responsável</th>
+                                    <th>Prazo</th>
+                                    <th data-bind="ifnot:$parents[1].show().noEdit()">Auditado</th>
+                                    <th>Detalhes</th>
+                                </tr>
+                            </thead>
+                            <tbody data-bind="foreach:actions">
+                                <tr>
+                                    <td data-bind="text:action"></td>
+                                    <td data-bind="text:place"></td>
+                                    <td data-bind="text:responsible"></td>
+                                    <td data-bind="text:deadline() + ' ' + deadlineType()"></td>
+                                    <td data-bind="ifnot:$parents[2].show().noEdit()">
+                                        <input type="checkbox" data-bind="checked:isAudited, disable:$parent.isCanceled()">
+                                    </td>
+                                    <td>
+                                        <a href="javascript:;" data-bind="click:$parents[2].show().showActionDetails.bind($data)">Detalhes</a>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <!-- /ko -->
+                <!-- /ko -->
+                <!-- ko if: selectedAction -->
+                    <!-- ko with: selectedAction -->
+                    <div class="col-xs-12">
+                        <a href="javascript:;" data-bind="click:$parents[1].show().hideActionDetails">Voltar</a>
+                    </div>
+                    <div class="col-xs-6 col-md-1">
+                        <p><b>Ação</b></p>
+                    </div>
+                    <div class="col-xs-6 col-md-5">
+                        <p class="text-left"><span data-bind="text:action"></span></p>
+                    </div>
+                    <div class="col-xs-6 col-md-1">
+                        <p><b>Local</b></p>
+                    </div>
+                    <div class="col-xs-6 col-md-5">
+                        <p class="text-left"><span data-bind="text:place"></span></p>
+                    </div>
+                    <div class="col-xs-6 col-md-1">
+                        <p><b>Responsável</b></p>
+                    </div>
+                    <div class="col-xs-6 col-md-5">
+                        <p class="text-left"><span data-bind="text:responsible"></span></p>
+                    </div>
+                    <div class="col-xs-6 col-md-1">
+                        <p><b>Prazo</b></p>
+                    </div>
+                    <div class="col-xs-6 col-md-5">
+                        <p class="text-left"><span data-bind="text:deadline() + ' ' + deadlineType()"></span></p>
+                    </div>
+                        <!-- ko ifnot: $parents[1].show().noEdit() -->
+                        <div class="col-xs-12">
+                            <input type="checkbox" data-bind="checked:isAudited, disable:$parents[1].show().selectedGoal().isCanceled()"/> Marcar como auditado
+                        </div>
+                        <!-- /ko -->
+                    <!-- /ko -->
+                <!-- /ko -->
+            <!-- /ko -->
+        </div>
+        <div class="row" data-bind="if: auditStep() == App.Auditoria.Constants.STEPS.PartialResults">
+            <div class="col-xs-12 col-md-6">
+                <div id="perResidue" style="height:300px;"></div>
+            </div>
+            <div class="col-xs-12 col-md-6">
+                <div id="perGoal" style="height:300px;"></div>
+            </div>
+        </div>
+        <!-- /ko -->
+        <!-- /ko -->
+    </div>
+</div>

@@ -1,0 +1,200 @@
+.left-sidebar .slider.slider-horizontal {
+    margin-top: 15px;
+    width: 100%;
+}
+
+.product-details .view-product img{
+    height: 400px;
+    width: auto;
+}
+
+.product-details .name-product{
+    text-transform: uppercase !important;
+    text-align: center;
+}
+
+.product-details .product-information {
+    padding-left: 15px;
+    padding-right: 15px;
+    padding-bottom: 15px;
+    padding-top: 15px;
+}
+
+.product-details .product-information pre {
+    background-color: white;
+    border-radius: 1px;
+}
+
+.product-details .container-like-heart label{
+    margin-left: 5px;
+}
+
+.recommended_items > img {
+    max-height: 300px;
+    width: auto;
+    margin: 0 auto;
+}
+
+.checkbox label:after,
+.radio label:after {
+    content: '';
+    display: table;
+    clear: both;
+}
+
+.checkbox .cr,
+.radio .cr {
+    position: relative;
+    display: inline-block;
+    border: 1px solid #49bf00;
+    border-radius: .25em;
+    width: 1.3em;
+    height: 1.3em;
+    float: left;
+    margin-right: .5em;
+}
+
+.radio .cr {
+    border-radius: 50%;
+}
+
+.checkbox .cr .cr-icon,
+.radio .cr .cr-icon {
+    position: absolute;
+    font-size: .8em;
+    line-height: 0;
+    top: 50%;
+    left: 20%;
+}
+
+.radio .cr .cr-icon {
+    margin-left: 0.04em;
+}
+
+.checkbox label input[type="checkbox"],
+.radio label input[type="radio"] {
+    display: none;
+}
+
+.checkbox label input[type="checkbox"] + .cr > .cr-icon,
+.radio label input[type="radio"] + .cr > .cr-icon {
+    transform: scale(3) rotateZ(-20deg);
+    opacity: 0;
+    transition: all .3s ease-in;
+}
+
+.checkbox label input[type="checkbox"]:checked + .cr > .cr-icon,
+.radio label input[type="radio"]:checked + .cr > .cr-icon {
+    transform: scale(1) rotateZ(0deg);
+    opacity: 1;
+}
+
+.checkbox label input[type="checkbox"]:disabled + .cr,
+.radio label input[type="radio"]:disabled + .cr {
+    opacity: .5;
+}
+
+.checkbox .glyphicon-ok:before {
+    color: #49bf00;
+}
+
+.checkbox span.cr-label {
+    color: #757575;
+}
+
+.border {
+    border: 1px solid #49bf00;
+}
+
+.container-like-heart{
+    display: inline-block;
+}
+
+.container-like-heart .like-heart img{
+    transition: transform .1s;
+    cursor: pointer;
+    height: 25px;
+}
+
+@keyframes heartbeat
+{
+  0%
+  {
+    transform: scale( .85 );
+  }
+  20%
+  {
+    transform: scale( 2 );
+  }
+  40%
+  {
+    transform: scale( .85 );
+  }
+  60%
+  {
+    transform: scale( 2 );
+  }
+  80%
+  {
+    transform: scale( .85 );
+  }
+  100%
+  {
+    transform: scale( .85 );
+  }
+}
+
+.container-like-heart .like-heart img:hover {
+    transform: scale(2.9); /* (150% zoom - Note: if the zoom is too large, it will go outside of the viewport) */
+    animation: heartbeat 1s infinite;
+}
+
+.container-like-heart .like-heart .like{
+    color: #d20000 !important;
+    cursor: pointer;
+}
+
+.container-like-heart .like-heart label {
+    cursor: pointer;
+}
+
+/* Component "zoom-image" */
+.fade-modal-zoom-image .close {
+    opacity: 1;
+    position: absolute;
+    z-index: 999999;
+    left: calc(100% - 40px);
+}
+
+.fade-modal-zoom-image .close span {
+    font-size: 65px;
+    color: white;
+}
+
+.fade-modal-zoom-image .container-img-viewer-2 {
+    display: table;
+    margin: 0 auto;
+}
+
+.product-details .container-image .icon-zoom{
+    cursor: pointer;
+    position: absolute;
+    left: calc(100% - 31px);
+    background-color: white;
+    border-bottom: 1px solid #e4e4e3;
+    border-left: 1px solid #e4e4e3;
+}
+
+.product-details .container-image .icon-zoom img {
+    height: 30px;
+    border: none;
+    transform: rotate(90deg);
+    position: relative;
+    padding: 5px;
+}
+
+.product-details .container-image{
+    position: relative;
+    display: table;
+    margin: 0 auto;
+}

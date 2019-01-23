@@ -1,0 +1,55 @@
+<div class="box">
+    <div class="box-body">
+        <div class="row">
+            <div class="col-xs-12 col-md-3">
+                <div>
+                    <img id="pictureImg" style="max-width: 100%"/>
+                </div>
+                    <input type="file" accept="image/*" name="picture" id="picture" style="display:none" data-bind="event: { change: showPicture  }" />
+                    <label for="picture" class="btn btn-xs btn-success" data-bind="visible: !changingPicture()">Mudar</label>
+                    <button type="button" class="btn btn-xs btn-success" data-bind="click: finishCrop, visible: changingPicture">Feito!</button>
+                    <button type="button" class="btn btn-xs btn-warning" data-bind="click: cancelCrop, visible:changingPicture">Cancelar</button>
+                <!-- </div> -->
+            </div>
+            <!-- ko ifnot: changingPassword -->
+            <div class="col-xs-12 col-md-9">
+                <!-- ko ifnot: editing() == 'name' -->
+                <h3 data-bind="click: function() { edit('name') }">
+                    <span data-bind="text:name"></span>
+                    <i style="font-size: 14px; color: gray;" class="glyphicon glyphicon-pencil"></i>
+                </h3>
+                <!-- /ko -->
+                <!-- ko if: editing() == 'name' -->
+                <input type="text" class="form-control profile-editing-control" id="name" data-bind="value:name"></input>
+                <!-- /ko -->
+            </div>
+            <!-- /ko -->
+            <!-- ko if: changingPassword -->
+            <div class="col-xs-12 col-md-9">
+                <div class="col-xs-12">
+                    <button type="button" class="btn btn-sm btn-flat btn-success ripple" data-bind="click:savePassword">
+                        <i class="fa fa-save"></i>
+                    </button>
+                    <button type="button" class="btn btn-sm btn-flat btn-danger ripple" data-bind="click:cancelPasswordEdit">
+                        <i class="fa fa-times"></i>
+                    </button>
+                </div>
+                <form-input-password params="value: oldPassword, placeholder:'Senha atual', label: 'Senha atual', css: 'col-xs-12 col-md-9', small: true"></form-input-password>
+                <form-input-password params="value: password, placeholder:'Nova Senha', label: 'Nova Senha', css: 'col-xs-12 col-md-9', small: true"></form-input-password>
+                <form-input-password params="value: cPassword, placeholder:'Confirme a nova senha', label: 'Confirme a nova senha', css: 'col-xs-12 col-md-9', small: true"></form-input-password>
+            </div>
+            <!-- /ko -->
+        </div>
+    </div>
+    <div class="row" style="padding:10px">
+        <div class="col-xs-12 col-md-3">
+            <a href="javascript:;" class="center-text" data-bind="click:changePassword">Alterar minha senha</a>
+        </div>
+        <div class="col-xs-12 col-md-offset-6 col-md-3">
+            <button class="btn btn-flat btn-success btn-block ripple" data-bind="click:save, visible: !changingPassword()">
+                Salvar
+                <i class="glyphicon glyphicon-ok"></i>
+            </button>
+        </div>
+    </div>
+</div>

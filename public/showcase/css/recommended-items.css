@@ -1,0 +1,30 @@
+.recommended-items.slider {
+    width: 100%;
+}
+
+.recommended-items .slick-slide {
+  margin: 0px 20px;
+}
+
+.recommended-items .slick-slide img {
+  width: 100%;
+}
+
+.recommended-items .slick-slide {
+  transition: all ease-in-out .3s;
+}
+
+.recommended-items .left, .recommended-items .right {
+    z-index: 1 !important;
+    cursor: pointer;
+}
+
+.recommended-items .slick-disabled,
+.recommended-items .slick-disabled
+{
+    opacity: .25 !important;
+}
+
+.recommended-items .slick-slide:hover{
+    cursor: pointer;
+}

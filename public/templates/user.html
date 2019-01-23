@@ -1,0 +1,60 @@
+<div class="box">
+    <div class="box-body">
+        <div class="row">
+            <div class="col-xs-12">
+                <h3 class="text-center page-header">Usuários do Sistema</h3>
+            </div>
+        </div>
+        <!-- ko if: step() == Constants.STEPS.Listing -->
+        <div class="row">
+            <div class="col-xs-6 col-md-2 btn-block" style="margin:10px;">
+                <button class="btn btn-primary btn-flat" data-bind="click: addNew">Incluir usuário
+                    <i class="fa fa-plus"></i>
+                </button>
+            </div>
+        </div>
+        <data-table params="conf : $data.configDataTable"> </data-table>
+        <!-- /ko -->
+
+        <!-- ko if: [Constants.STEPS.AddingNew, Constants.STEPS.Editing].indexOf(step()) > -1 -->
+        <div class="row">
+            <div class="col-md-6">
+                <button-back style="margin-left: 15px;" params="click: goBack"></button-back>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-6" data-bind="with: user">
+
+                <form-input-text params="value:name, placeholder: 'Nome do usuário', label:'Nome',css: 'col-xs-12'"></form-input-text>
+                <form-input-text params="value:email, placeholder: 'exemplo@email.com', label:'E-mail',css: 'col-xs-12'"></form-input-text>
+                <form-input-password params="value:password, placeholder: 'Senha', label:'Senha', css: 'col-xs-12'"></form-input-password>
+                <form-input-password params="value:cPassword, placeholder: 'Confirmação de Senha', label:'Confirmação de Senha', css: 'col-xs-12'"></form-input-password>
+
+            </div>
+            <div class="col-md-6">
+
+                <h3>Permissões Usuário</h3>
+
+                <div class="row" data-bind="foreach: roles">
+                    <div class="col-md-12">
+                        <div class="checkbox">
+                            <label>
+                                <input type="checkbox" data-bind="value: $data.name, checked: $data.checked">
+                                <!--ko text: $data.name -->
+                                <!--/ko-->
+                            </label>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+            <div class="col-md-12">
+                <div class="col-md-3 pull-right">
+                    <button type="button" class="btn btn-success btn-block ripple" data-bind="click: saveUser.bind(user)">Salvar</button>
+                    <button type="button" class="btn btn-danger btn-block ripple" data-bind="click: cancel">Cancelar</button>
+                </div>
+            </div>
+        </div>
+        <!-- /ko -->
+    </div>
+</div>

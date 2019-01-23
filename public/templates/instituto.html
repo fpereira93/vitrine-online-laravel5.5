@@ -1,0 +1,59 @@
+<div class="box">
+    <div class="box-body">
+        <h1 class="page-header">Institutos / Setores</h1>
+        <div data-bind="if: step() == 0">
+            <button-add-new params="click: addNew"></button-add-new>
+            <!-- ko if: institutes().length -->
+            <data-table params="conf : $data.configDataTable"> </data-table>
+            <!-- /ko -->
+            <!-- ko ifnot: institutes().length -->
+            <h3>Nada para mostrar aqui :)</h3>
+            <!-- /ko -->
+        </div>
+        <!-- ko if: step() == 1 || step() == 2 -->
+        <div data-bind="with: show">
+            <button-back params="click: $parent.showListing"></button-back>
+            <button-edit params="click: $parent.edit"></button-edit>
+            <form role="form">
+                <div class="form-group">
+                    <label>Nome</label>
+                    <input type="text" class="form-control" placeholder="Identificação do Instituto" data-bind="enable: $parent.step() == 2 || $parent.editing(), value: Name">
+                </div>
+                <!-- ko if: $parents[0].step() == 1 -->
+                <div class="row" data-bind="with:$parent.sector">
+                    <form-input-text params="value:Name, placeholder: 'Nome do setor', label:'Nome do setor'"></form-input-text>
+                    <div class="col-xs-12">
+                        <button type="button" class="btn btn-xs btn-info" data-bind="click:$parents[1].saveSector, disable: $parent.isWaitingRequest, text: $parent.isWaitingRequest() ? 'Salvando...' : 'Adicionar'"></button>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-xs-12 col-md-6">
+                        <div class="table-responsive" style="margin-top: 20px;">
+                            <table class="table">
+                                <theader>
+                                    <tr>
+                                        <th>Setor</th>
+                                        <th style="width:140px">Ações</th>
+                                    </tr>
+                                </theader>
+                                <tbody data-bind="foreach:Sectors">
+                                    <tr>
+                                        <td data-bind="text:Name"></td>
+                                        <td>
+                                            <button type="button" class="btn btn-danger btn-sm btn-flat ripple" data-bind="disable:$parents[1].isWaitingRequest, click: $parents[1].removeSector.bind($data, SectorId())">
+                                                <i class="glyphicon glyphicon-trash"></i>
+                                            </button>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+                <!-- /ko -->
+                <button type="submit" class="btn btn-success btn-flat" data-bind="visible: $parent.step() == 2 || $parent.editing(), click: $parent.save">Salvar</button>
+            </form>
+        </div>
+        <!-- /ko -->
+    </div>
+</div>

@@ -1,0 +1,285 @@
+<div class="box">
+    <div class="box-body">
+        <!-- ko if: step() == Constants.STEPS.Listing -->
+        <a href="#" class="btn btn-primary btn-flat pull-right" data-bind="click: addChecklist">Novo Checklist</a>
+        <data-table params="conf:$data.configDataTable"></data-table>
+        <!-- /ko -->
+
+        <!-- ko if: step() == Constants.STEPS.AddingNew -->
+        <!-- ko with: editing() -->
+        <button-back params="click: $parent.showListing">Voltar</button-back>
+        <button type="button" class="btn btn-success btn-flat ripple" data-bind="click:$parent.saveChecklist">Salvar</button>
+        <div class="row">
+
+            <div class="col-xs-12 col-md-6">
+                <label>Instituto</label>
+                <!-- ko ifnot: id -->
+                <select class="form-control select2" data-bind="value: institute, options: $parent.institutes, optionsValue: 'id', optionsText: 'text',
+                    select2: {placeholder: 'Selecione um Instituto', allowClear: true}" style="width: 100%">
+                </select>
+                <!-- /ko -->
+                <!-- ko if: id -->
+                <input type="text" disabled class="form-control" data-bind="value: InstituteName "/>
+                <!-- /ko -->
+            </div>
+
+            <div class="col-xs-12 col-md-6">
+                <label>Setor</label>
+                <!-- ko ifnot: id-->
+                <select class="form-control select2" data-bind="value: sector, options: $parent.sectors, optionsValue: 'id', optionsText: 'text',
+                    select2: {placeholder: 'Selecione um setor', allowClear: true}" style="width: 100%">
+                </select>
+                <!-- /ko -->
+                <!-- ko if: id -->
+                <input type="text" disabled class="form-control" data-bind="value: SectorName "/>
+                <!-- /ko -->
+            </div>
+        </div>
+
+        <div class="row">
+            <form-input-date params="value:date, placeholder: 'Data', label: 'Data', disable: id"></form-input-date>
+            <div class="col-xs-12 col-md-6">
+                <label>Multiplicador</label>
+                <select class="form-control select2" data-bind="value: multiplier, options: $parent.users, optionsValue: 'id', optionsText: 'text',
+                    select2: {placeholder:'Selecione o multiplicador', allowClear:true}" style="width: 100%">
+                </select>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-xs-12 col-md-6">
+                <label>Contato</label>
+                <select class="form-controll select2" data-bind="value: contact, options: $parent.users, optionsValue: 'id', optionsText: 'text',
+                    select2: {placeholder:'Selecione o contato', allowClear:true}" style="width: 100%">
+                </select>
+            </div>
+            <div class="col-xs-12 col-md-6">
+                <label>Auditor</label>
+                <select class="form-controll select2" data-bind="value: auditor, options: $parent.users, optionsValue: 'id', optionsText: 'text',
+                    select2: {placeholder:'Selecione o auditor', allowClear:true}" style="width: 100%">
+                </select>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-xs-12">
+                <h3>Resíduos encontrados</h3>
+            </div>
+            <div class="col-xs-12">
+                <ol class="breadcrumb" data-bind="foreach:$parent.breadcrumb">
+                    <li data-bind="text:$data"></li>
+                </ol>
+            </div>
+            <!-- ko if: $parent.substep() == App.Checklist.Showing_Residues -->
+            <div class="col-xs-12 col-md-5">
+                <select class="form-controll select2" data-bind="value: selectedResidue, options:$parent.residuesAvaiable, optionsValue: 'id', optionsText: 'text', select2: {placeholder: 'Adicione resíduos', allowClear: true}"
+                    style="width: 100%"></select>
+                <label>Adicione os resíduos encontrados</label>
+            </div>
+            <div class="col-xs-2">
+                <button class="btn btn-primary btn-flat" type="button" data-bind="click:function() {$parent.addResidue($data.selectedResidue())}">
+                    <i class="glyphicon glyphicon-plus"></i>
+                </button>
+            </div>
+            <div class="col-xs-12">
+                <div class="table-responsive">
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th>Resíduo</th>
+                                <th>Preenchido?</th>
+                                <th>Ações</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <!-- ko foreach: residues -->
+                            <tr>
+                                <td data-bind="text: $root.getResidueName($data.type)"></td>
+                                <td></td>
+                                <td class="text-center">
+                                    <button-table-delete data-bind="click: $parent.removeResidue" class="pr-5"></button-table-delete>
+
+                                    <button-table-view data-bind="click: $root.editResidue.bind($data)"></button-table-view>
+                                </td>
+                            </tr>
+                            <!-- /ko -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            <!-- /ko -->
+
+            <!-- ko if: $parent.substep() == App.Checklist.Showing_Residue_Details -->
+            <div class="col-xs-12">
+                <button-back params="click: $parent.showResidues">Voltar</button-back>
+                
+                <button type="button" class="btn btn-info btn-flat ripple" data-bind="click:$parent.showGoals.bind($data)">
+                    <i class="glyphicon glyphicon-plus"></i>Objetivos e metas
+                </button>
+                
+                <form data-bind="with: $parent.selectedResidue">
+                    <form-input-text params="value:$parents[1].getResidueName(type), placeholder: 'Tipo', label: 'Tipo', css: 'col-xs-12 col-md-6', disable: true"></form-input-text>
+                    <div class="form-group col-xs-12 col-md-3">
+                        <label>Tipo aferição</label>
+                        <select class="form-control" data-bind="value:quantityType, optionsValue: 'id', optionsText: 'text', options: $parents[1].quantityTypes"></select>
+                    </div>
+                    <form-input-number params="value:quantity, placeholder: 'Quantidade', label:'Quantidade', css: 'col-xs-12 col-md-3'"></form-input-number>
+                    <form-input-text params="value:segregation, placeholder: 'Segregação', label: 'Segregação'"></form-input-text>
+                    <form-input-text params="value:identificationAndStorage, placeholder: 'Identificação e Armazenamento', label: 'Identificação e Armazenamento'"></form-input-text>
+                    <form-input-text params="value:treatment, placeholder: 'Tratamento', label: 'Tratamento'"></form-input-text>
+                    <form-input-text params="value:transport, placeholder: 'Transporte / Devolução Final', label: 'Transporte / Devolução Final'"></form-input-text>
+                    <form-input-text params="value:law, placeholder: 'Lei', label: 'Lei'"></form-input-text>
+                    <form-input-text params="value:lawDescription, placeholder: 'Descrição das Normas', label: 'Descrição'"></form-input-text>
+                </form>
+            </div>
+            <div class="col-xs-12">
+                <div class="table-responsive">
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th>Derivação</th>
+                                <th>Meta</th>
+                                <th>Objetivo</th>
+                                <th>Ações</th>
+                            </tr>
+                        </thead>
+                        <tbody data-bind="with: $parent.selectedResidue()">
+
+                            <!-- ko foreach: goals -->
+                            <tr>
+                                <td data-bind="text: App.FindValue($root.derivations, $data.derivation)"></td>
+                                <td data-bind="text: App.FindValue($root.goals, $data.goal)"></td>
+                                <td data-bind="text: $data.objective"></td>
+                                <td class="text-center">
+                                    <button-table-delete data-bind="click: $parent.removeGoal" class="pr-5"></button-table-delete>
+
+                                    <button-table-view data-bind="click: $root.selectGoal"></button-table-view>
+                                </td>
+                            </tr>
+                            <!-- /ko -->
+
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            <!-- /ko -->
+
+            <!-- ko if: $parent.substep() == App.Checklist.Showing_Goals -->
+            <!-- ko with: $parent.goal -->
+            <div class="col-xs-12">
+                <button-back params="click: $parents[1].backGoal">Voltar</button-back>
+
+                <button type="button" class="btn btn-info btn-flat ripple" data-bind="click:function() { $parents[1].saveGoal($data); $parents[1].backGoal(); }">
+                    <i class="glyphicon glyphicon-floppy-disk"></i>
+                </button>
+
+                <button class="btn btn-info btn-flat ripple" type="button" data-bind="click:function() { addAction(true) }">
+                    <i class="glyphicon glyphicon-plus"></i> Ação
+                </button>
+
+                <form>
+                    <div class="col-xs-12 col-md-6">
+                        <label>Derivação</label>
+                        <select class="form-control" data-bind="value: derivation, options: $parents[1].derivations, optionsValue: 'id', optionsText: 'text', select2: {allowClear: true, placeholder: 'Selecione uma derivação'}"></select>
+                    </div>
+                    <div class="col-xs-12 col-md-6">
+                        <label>Meta</label>
+                        <select class="form-control" data-bind="value: goal, options: $parents[1].goals, optionsValue: 'id', optionsText: 'text', select2: {allowClear: true, placeholder: 'Selecione uma meta'}"></select>
+                    </div>
+                    <div class="col-xs-12">
+                        <label>Objetivo</label>
+                        <input type="text" class="form-control" data-bind="value:objective"/>
+                    </div>
+                    <div class="col-xs-12">
+                        <h4>Ações</h4>
+                    </div>
+                    <!-- ko foreach: actions -->
+                    <div class="actionList">
+                        <div class="col-xs-12">
+                            <label>Ação</label>
+                            <input type="text" class="form-control" data-bind="value:action">
+                        </div>
+
+                        <div class="col-xs-12 col-md-3">
+                            <label>Local</label>
+                            <input type="text" class="form-control" data-bind="value:place">
+                        </div>
+                        <div class="col-xs-12 col-md-3">
+                            <label>Responsável</label>
+                            <select class="form-control" data-bind="value: responsible, options: $parents[2].users, optionsValue: 'id', optionsText: 'text', select2: {allowClear: true, placeholder: 'Responsável'}"></select>
+                        </div>
+                        <div class="col-xs-12 col-md-3">
+                            <label>Prazo</label>
+                            <input type="number" class="form-control" data-bind="value: deadline">
+                        </div>
+                        <div class="col-xs-12 col-md-2">
+                            <label>Prazo</label>
+                            <select class="form-control" data-bind="value: deadlineType, options: $parents[2].deadlineType, optionsValue: 'id', optionsText: 'text', select2: {allowClear: true, placeholder: 'Prazo'}"></select>
+                        </div>
+                        <div class="col-xs-12 col-md-1 mg-t-25">
+                            <button class="btn btn-danger btn-flat ripple" data-bind="click:$parent.removeAction" type="button">
+                                <i class="glyphicon glyphicon-trash"></i>
+                            </button>
+                        </div>
+                    </div>
+                    <!-- /ko -->
+
+                </form>
+
+            </div>
+
+            <!-- /ko -->
+
+            <!-- /ko -->
+
+        </div>
+        <!-- /ko -->
+        <!-- /ko -->
+
+        <!-- ko if: step() == 100 -->
+        <!-- App.Checklist.Constants.STEPS.ShowingLaws -->
+        <button-back params="click:showListing"></button-back>
+        <!-- ko with:editing -->
+        <!-- ko if: laws().length -->
+        <div class="row">
+            <div data-bind="css: 'col-xs-12 ' +  ($parent.showingLawDetails() ? 'col-md-7' : '')">
+                <h3>Requisitos legais</h3>
+                <table class="table table-hover" style="cursor:pointer">
+                    <thead>
+                        <tr>
+                            <th>Derivação</th>
+                            <th>Lei</th>
+                            <th>Atende?</th>
+                        </tr>
+                    </thead>
+                    <tbody data-bind="foreach:laws">
+                        <tr data-bind="click:$parents[1].showLawDetails.bind($data)">
+                            <td data-bind="text: type"></td>
+                            <td data-bind="text:law"></td>
+                            <td data-bind="text: meets"></td>
+                        </tr>
+                    </tbody>
+                </table>
+                <p>
+                    <small>Clique para ver detalhes</small>
+                </p>
+            </div>
+            <!-- ko if: $parent.showingLawDetails() -->
+            <div class="col-xs-12 col-md-5">
+                <h5>Comentários</h5>
+                <p data-bind="text:$parent.showingLawDetails().comments"></p>
+                <p>
+                    <a href="javascript:;" target="_blank" data-bind="text:$parent.showingLawDetails().law, attr: {href:$parent.showingLawDetails().link}"></a>
+                </p>
+            </div>
+            <!-- /ko -->
+        </div>
+        <!-- /ko -->
+
+        <!-- ko ifnot: laws().length -->
+        <h4>Não existem requisitos para o checklist selecionado !</h4>
+        <!-- /ko -->
+
+        <!-- /ko -->
+        <!-- /ko -->
+    </div>

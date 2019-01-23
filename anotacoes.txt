@@ -1,0 +1,31 @@
+@ Tabelas a serem criadas para o sistema @
+@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
+
+-> category
+    . idCategory
+    . name
+    . description
+
+-> brand
+    . idBrand
+    . name
+    . description
+
+-> product
+    . idProduct
+    . name
+    . description
+    . stock
+    . category
+    . brand	
+    . price
+
+-> container
+    . idContainer
+    . name
+    . description
+
+-> containerProduct
+    . idContainerProduct
+    . container
+    . image

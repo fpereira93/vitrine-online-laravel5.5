@@ -1,0 +1,164 @@
+    <div class="box">
+        <div class="box-body">
+            <div class="nav-tabs-custom">
+                <ul class="nav nav-tabs">
+                    <li data-bind="css: (step() == Constants.STEPS.Listing ? 'active' : '')">
+                        <a href="#">Lista</a>
+                    </li>
+                    <li data-bind="css: (step() == Constants.STEPS.AddingNew ? 'active' : '')">
+                        <a href="#">Incluir</a>
+                    </li>
+                    <li data-bind="css: (step() == Constants.STEPS.ShowingDetails ? 'active' : '')">
+                        <a href="#">Detalhes</a>
+                    </li>
+                </ul>
+                <div class="tab-content">
+                    <div class="tab-pane" data-bind="css: (step() ==  Constants.STEPS.Listing ? 'active' : '')">
+                        <div class="row">
+                            <button-add-new class="col-xs-12" params="click: add"></button-add-new>
+                        </div>
+                        <div class="row">
+                            <div class="col-xs-12 col-md-6 form-group">
+                                <label for="statusFilter">Filtrar por status</label>
+
+                                <select class="form-control"
+                                    data-bind="options: App.Ticket.Data.StatusTypes,
+                                    value: statusFilter,
+                                    optionsText: 'Description'"></select>
+
+                            </div>
+                            <div class="col-xs-12 col-md-6 form-group">
+                                <label for="subjectFilter">Filtrar por assunto</label>
+
+                                <select class="form-control"
+                                    data-bind="options: App.Ticket.Data.SubjectsOptions,
+                                    value: subjectFilter,
+                                    optionsText: 'Description'"></select>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-md-12">
+                                <button class="btn btn-success btn-flat pull-right" data-bind="click: filter">
+                                    Filtrar
+                                </button>
+                            </div>
+                        </div>
+
+                        <hr>
+
+                        <div class="row">
+                            <data-table params="conf : $data.configDataTable"> </data-table>
+                        </div>
+
+                    </div>
+                    <div class="tab-pane" data-bind="css: (step() == Constants.STEPS.AddingNew  ? 'active' : ''), with: show">
+                        <button-back params="click: $root.showListing">Voltar</button-back>
+
+                        <form role="form" action="javascript: void(0)">
+                            <div class="row">
+                                <div class="col-xs-12 col-md-6 form-group">
+                                    <label for="assunto">Assunto</label>
+
+                                    <select class="form-control"
+                                        data-bind="options: App.Ticket.Data.SubjectsOptions,
+                                        value: subject,
+                                        optionsText: 'Description'"></select>
+
+                                </div>
+                                <div class="col-xs-12 col-md-12 form-group">
+                                    <label for="mensagem">Mensagem</label>
+                                    <textarea class="form-control" data-bind="value:message,style: {color: messageIsOverLimit() ? 'red' : 'black'}, valueUpdate: 'afterkeydown' "
+                                        rows="10"></textarea>
+                                    <p data-bind="text:'Sua mensagem contém: ' + message().length + ' caracteres.', style: {color: messageIsOverLimit() ? 'red' : 'black'} "></p>
+                                </div>
+                                <div class="col-xs-12">
+                                    <button type="submit" class="btn btn-success btn-flat" data-bind="visible: $root.step() == Constants.STEPS.AddingNew, click: $parent.makeTicket, enable: isValid">Salvar</button>
+                                </div>
+                            </div>
+                        </form>
+
+                    </div>
+                    <div class="tab-pane" data-bind="css: (step() == Constants.STEPS.ShowingDetails ? 'active':''), with: ticketView">
+
+                        <button-back params="click: $root.showListing">Voltar</button-back>
+
+                        <div class="row">
+                            <div class="col-md-12 mt-10">
+
+                                <!-- DIRECT CHAT SUCCESS -->
+                                <div class="box box-success direct-chat direct-chat-success">
+                                    <div class="box-header with-border">
+                                        <h3 class="box-title">Histórico</h3>
+                                    </div>
+
+                                    <!-- /.box-header -->
+                                    <div class="box-body">
+                                        <div class="direct-chat-messages" id="overflow-messages">
+
+                                            <!-- ko foreach: $data.history -->
+                                            <div class="direct-chat-msg mb-25" data-bind="css: { right: $parent.OpendBy() == $data.UserAction() }">
+                                                <div class="direct-chat-info clearfix">
+                                                    <span class="direct-chat-name pull-left">
+                                                        <!-- ko text: $data.UserNameAnswer --><!-- /ko -->
+                                                    </span>
+
+                                                    <span class="direct-chat-timestamp pull-right">
+                                                        <!-- ko text: $data.CreatedAt --><!-- /ko -->
+                                                    </span>
+                                                </div>
+
+                                                <img class="direct-chat-img" src="./img/user1-128x128.jpg" alt="Message User Image"><!-- /.direct-chat-img -->
+
+                                                <div class="direct-chat-text">
+                                                    <pre data-bind="text: $data.Description"></pre>
+                                                </div>
+                                            </div>
+                                            <!-- /ko -->
+
+                                        </div>
+                                    </div>
+
+                                    <!-- /.box-body -->
+                                    <div class="box-footer">
+                                        <form action="javascript: void(0);">
+
+                                            <!-- ko if: ($data.permission.answer())  -->
+                                            <div class="input-group full-width mb-5">
+                                                <label>
+                                                    Texto
+                                                </label>
+                                                <textarea class="form-control" rows="3" type="text" data-bind="value:$data.text"></textarea>
+                                            </div>
+                                            <!-- /ko -->
+
+                                            <span class="input-group-btn">
+                                                <!-- ko if: $data.permission.answer -->
+                                                <button class="btn btn-success btn-flat pull-right" data-bind="click: $parent.answerTicket">
+                                                    Responder
+                                                </button>
+                                                <!-- /ko -->
+
+                                                <!-- ko if: $data.permission.close -->
+                                                <button class="btn btn-danger btn-flat pull-right mr-5" data-bind="click: $parent.closeTicket">
+                                                    Fechar
+                                                </button>
+                                                <!-- /ko -->
+
+                                                <!-- ko if: $data.permission.take -->
+                                                <button class="btn btn-warning btn-flat pull-right mr-5" data-bind="click: $parent.assumeTicket">
+                                                    Assumir
+                                                </button>
+                                                <!-- /ko -->
+                                            </span>
+                                        </form>
+                                    </div>
+
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>

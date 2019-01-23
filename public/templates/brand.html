@@ -1,0 +1,45 @@
+<div class="box">
+    <div class="box-body">
+        <div class="row">
+            <div class="col-xs-12">
+                <h3 class="text-center page-header">Marca</h3>
+            </div>
+        </div>
+
+        <!-- ko if: step() == Constants.STEPS.Listing -->
+            <div class="row mb-10">
+                <div class="col-xs-6 col-md-2 btn-block">
+                    <button class="btn btn-primary btn-flat" data-bind="click: $data.new">Incluir Marca
+                        <i class="fa fa-plus"></i>
+                    </button>
+                </div>
+            </div>
+
+            <div class="row">
+                <data-table params="conf : $data.configDataTable"> </data-table>
+            </div>
+        <!-- /ko -->
+
+        <!-- ko if: ((step() == Constants.STEPS.AddingNew) || (step() == Constants.STEPS.Editing)) -->
+
+            <div class="row mb-10">
+                <div class="col-md-6">
+                    <button-back params="click: back"></button-back>
+                </div>
+            </div>
+
+            <div class="row" data-bind="with: $data.brand">
+                <form-input-text params="maxlength: 50, value: name, placeholder: 'Nome', label:'Nome',css: 'col-md-12'"></form-input-text>
+                <form-input-textarea params="maxlength: 500, rows: 5, value: description, placeholder: 'Descrição', label:'Descrição',css: 'col-md-12'"></form-input-textarea>
+            </div>
+
+            <div class="row">
+                <div class="col-md-3 pull-right">
+                    <custom-button params="click: $data.save, text: 'Salvar', css: 'btn btn-success btn-block ripple'"></custom-button>
+                </div>
+            </div>
+
+        <!-- /ko -->
+
+    </div>
+</div>

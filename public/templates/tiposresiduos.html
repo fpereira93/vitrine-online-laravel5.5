@@ -1,0 +1,153 @@
+<div class="box">
+    <div class="box-body">
+
+        <div class="row">
+            <div class="col-xs-12">
+                <h3 class="text-center page-header">Tipos de Resíduos</h3>
+            </div>
+        </div>
+
+    <!-- ko if: step() == Constants.STEPS.Listing -->
+        <div class="row mb-5">
+            <div class="col-xs-12">
+                <button-add-new params="click: addNew"></button-add-new>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-xs-12">
+
+                <data-table params="conf : $data.configDataTable"> </data-table>
+
+            </div>
+        </div>
+    <!-- /ko -->
+
+    <!-- ko if: step() == Constants.STEPS.AddingNew || step() == Constants.STEPS.ShowingDetails -->
+        <button-back params="click: showList"></button-back>
+
+    <!-- ko ifnot: step() == Constants.STEPS.AddingNew -->
+        <button-edit params="click: edit"></button-edit>
+    <!-- /ko -->
+
+        <form role="form" data-bind="with: showing">
+            <form-input-text params="value:Name, placeholder: 'Identificação do resíduo', label: 'Tipo de Resíduo', css:
+            'col-xs-12 col-md-12', disable: $parent.step() != Constants.STEPS.AddingNew && !$parent.editing()"></form-input-text>
+            <form-input-textarea params="value:LawObservations, placeholder: 'Comentários sobre a legislação', label:
+            'Observações sobre a legislação', css: 'col-xs-12 col-md-12', disable: $parent.step() != Constants.STEPS.AddingNew && !$parent.editing()"></form-input-textarea>
+            <div class="row">
+                <div class="col-xs-12">
+                    <!-- ko if: $parent.addingLink() || $parent.addingFile() -->
+                    <button tupe="button" class="btn btn-sm btn-flat btn-success ripple" data-bind="click:$parent.addingLink() ? $parent.saveLink : $parent.saveFile">
+                        <i class="fa fa-save"></i>
+                    </button>
+                    <button tupe="button" class="btn btn-sm btn-flat btn-danger ripple" data-bind="click:$parent.cancelAddingDocument">
+                        <i class="fa fa-times"></i>
+                    </button>
+                    <!-- /ko -->
+                </div>
+            </div>
+            <!-- ko if: $parent.addingLink() || $parent.addingFile() -->
+            <div class="row">
+                <div class="col-xs-12 col-md-6 col-md-offset-3">
+                    <label>Nome da Lei/Documento</label>
+                    <input type="text" class="form-control input-sm" data-bind="value: $parent.Law" />
+                </div>
+            </div>
+            <!-- /ko -->
+            <!-- ko if: $parent.addingLink() -->
+            <div class="row" style="margin-top:15px;">
+                <div class="col-xs-10 col-md-6 col-md-offset-3">
+                    <label>Endereço do documento</label>
+                    <input type="text" class="form-control input-sm" data-bind="value: $parent.Link">
+                </div>
+            </div>
+            <!--/ko-->
+            <!-- ko if: $parent.addingFile -->
+            <div class="row" style="margin-top:15px;">
+                <div class="col-xs-12 col-md-6 col-md-offset-3">
+                    <input type="file" id="addFile" class="fileInput fileInputRed" data-bind="event: { change: $parent.handleFileSelected }"/>
+                    <label for="addFile">Selecione o arquivo</label>
+                </div>
+            </div>
+            <!-- /ko -->
+            <!-- ko if: !$parent.addingLink() && !$parent.addingFile() -->
+            <div class="row">
+
+                <div class="col-md-6" data-bind="css: { 'no-pointer' : !$parent.enabledButtonDocuments() }">
+                    <h4> Arquivos </h4>
+
+                    <button type="button" class="btn btn-sm btn-flat btn-info ripple" data-bind="click: $parent.addFile">
+                        <i class="fa fa-file"></i>
+                    </button>
+
+                    <table class="table table-striped mb-10">
+                        <thead>
+                            <tr>
+                                <th>Código</th>
+                                <th>Documento</th>
+                                <th>Ações</th>
+                            </tr>
+                        </thead>
+                        <tbody data-bind="foreach: $data.Files">
+                            <!-- ko if: !$data.deleted() -->
+                            <tr>
+                                <td data-bind="text: $data.FileId"></td>
+                                <td data-bind="text: $data.Description"></td>
+                                <td>
+                                    <center>
+                                        <button-table-delete params="click: $parent.deleteFile.bind(null, $data)"></button-table-delete>
+                                    </center>
+                                </td>
+                            </tr>
+                            <!-- /ko -->
+                        </tbody>
+                    </table>
+                </div>
+
+                <div class="col-md-6" data-bind="css: { 'no-pointer' : !$parent.enabledButtonDocuments() }">
+                    <h4>Links</h4>
+
+                    <button type="button" class="btn btn-sm btn-flat btn-info ripple" data-bind="click: $parent.addLink">
+                        <i class="fa fa-link"></i>
+                    </button>
+
+                    <table class="table table-striped">
+                        <thead>
+                            <tr>
+                                <th>Código</th>
+                                <th>Descrição</th>
+                                <th>Link</th>
+                                <th>Ações</th>
+                            </tr>
+                        </thead>
+                        <tbody data-bind="foreach: $data.Links">
+                            <!-- ko if: !$data.deleted() -->
+                            <tr>
+                                <td data-bind="text: $data.ResidueTypeDocumentsId"></td>
+                                <td data-bind="text: $data.Description"></td>
+                                <td data-bind="text: $data.Link"></td>
+                                <td>
+                                    <center>
+                                        <button-table-delete params="click: $parent.deleteLink.bind(null, $data)"></button-table-delete>
+                                    </center>
+                                </td>
+                            </tr>
+                            <!-- /ko -->
+                        </tbody>
+                    </table>
+                </div>
+
+            </div>
+            <!-- /ko -->
+            <div class="row" style="margin-top:15px">
+                <div class="col-xs-12">
+                    <!-- ko if: (!$parent.addingLink() && !$parent.addingFile() && ($parent.editing() || (Constants.STEPS.AddingNew == $parent.step()))) -->
+                    <button type="button" class="btn btn-success btn-flat" data-bind="click: $parent.saveResidue.bind($data)">Salvar</button>
+                    <!-- /ko -->
+                </div>
+            </div>
+        </form>
+    <!-- /ko -->
+    </div>
+</div>

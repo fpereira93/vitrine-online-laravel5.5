@@ -1,0 +1,23 @@
+<div class="box">
+    <div class="box-body">
+        <h1 class="page-header">Tópicos de Treinamentos</h1>
+        <!-- ko if: step() == Constants.STEPS.Listing --> 
+        <div>
+            <button-add-new params="click: addNew"></button-add-new>
+            <data-table params="conf:$data.configDataTable"> </data-table>
+        </div>
+        <!-- /ko -->
+        <!-- ko if: step() == Constants.STEPS.AddingNew || step() == Constants.STEPS.Editing -->
+        <div data-bind="with: editing">
+            <button-back params="click: $parent.showListing"></button-back>
+            <form role="form">
+                <div class="form-group">
+                    <label>Descrição</label>
+                    <input type="text" class="form-control" placeholder="Descrição" data-bind="value: Description">
+                </div>
+                <button type="button" class="btn btn-success btn-flat ripple" data-bind="click: $parent.saveTopic">Salvar</button>
+            </form>
+        </div>
+        <!-- /ko -->
+    </div>
+</div>
