@@ -1,5 +1,3 @@
-[(Demo) Ateliê - Maria Modas](http://www.ateliemariamodas.com.br)
-
 # Descrição do projeto
 
 Código fonte de um projeto feito em PHP, utilizando o Framework Laravel na sua versão 5.5. O projeto possui uma fácil manutenção, pois criei pensando nisso, foi desenvolvido com o Framework mais utilizado no mundo, isso quer dizer que a documentação do mesmo é atualizada frequentemente.
